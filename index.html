@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="JoyJoy Arcade: tiny games for big boredom." />
+    <title>JoyJoy Arcade</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="JoyJoy Arcade home">
+          <span class="brand-mark" aria-hidden="true">J</span>
+          <span>JOYJOY <em>ARCADE</em></span>
+        </a>
+        <div class="player-stats" aria-label="Player stats">
+          <span class="streak-pill"><strong id="streak">0</strong> day streak</span>
+          <span class="ticket-pill"><strong id="tickets">0</strong> tickets</span>
+        </div>
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow"><span></span> The doors are open all day, and everyone can play.</p>
+            <h1>Goodbye,<br /><span>boredom.</span></h1>
+          <p class="hero-text">Tiny games. Big energy. Pick a cabinet, clear a quest, and give tomorrow's boredom something to worry about.</p>
+            <a class="scroll-cue" href="#arcade"><span>v</span> choose your game</a>
+          </div>
+          <div class="hero-machine" aria-label="Decorative arcade cabinet illustration">
+            <div class="machine-top"><span>J</span><span>O</span><span>Y</span><span>!</span></div>
+            <div class="machine-screen"><div class="screen-spark">+</div><strong>PRESS<br />PLAY</strong><small>INSERT FUN</small></div>
+            <div class="machine-controls"><span class="joystick"></span><span class="control-dot yellow"></span><span class="control-dot pink"></span></div>
+          </div>
+        </section>
+
+        <section class="habit-section" id="quests">
+          <div class="daily-challenge">
+            <div class="daily-art" aria-hidden="true">R</div>
+            <div class="daily-copy"><p class="eyebrow"><span></span> A fresh challenge is waiting today.</p><h2>Daily challenge</h2><p id="daily-text">Loading today's challenge...</p><button class="challenge-button" id="daily-play" type="button">Play the challenge -&gt;</button></div>
+            <div class="daily-reward"><span>+</span><b id="daily-reward">+20</b><small>bonus tickets</small></div>
+          </div>
+          <div class="task-board">
+            <div class="task-heading"><div><p class="eyebrow"><span></span> Tasks you can finish today.</p><h2>Small wins<br /><i>add up over time.</i></h2></div><div class="task-progress"><strong id="task-count">0/0</strong><span>tasks done</span></div></div>
+            <form class="task-form" id="task-form"><label class="sr-only" for="task-input">Add a task</label><input id="task-input" maxlength="70" placeholder="Add a tiny task..." autocomplete="off" /><button type="submit">+ Add task</button></form>
+            <ul class="task-list" id="task-list"></ul>
+            <p class="task-hint">Finish a game to clear your arcade quest automatically.</p>
+          </div>
+        </section>
+
+        <section class="arcade-section" id="arcade">
+          <div class="section-heading">
+            <div><p class="eyebrow"><span></span> Choose a game and start your next round.</p><h2>Choose a game<br /><i>that sounds fun.</i></h2></div>
+            <p class="microcopy">Choose any game for a quick break.<br />Nothing needs to be downloaded, and scores stay on this device.</p>
+          </div>
+
+          <div class="game-grid">
+            <button class="game-card card-coral active" data-game="tap" type="button">
+              <span class="card-number">01</span><span class="card-icon">+</span><span class="card-title">TAP<br /><b>RUSH</b></span><span class="card-meta">A 30-second reflex game.</span><span class="play-arrow">-&gt;</span>
+            </button>
+            <button class="game-card card-blue" data-game="dodge" type="button">
+              <span class="card-number">02</span><span class="card-icon">O</span><span class="card-title">DODGE<br /><b>ZONE</b></span><span class="card-meta">Dodge falling rocks and stay focused.</span><span class="play-arrow">-&gt;</span>
+            </button>
+            <button class="game-card card-yellow" data-game="match" type="button">
+              <span class="card-number">03</span><span class="card-icon">A B</span><span class="card-title">MATCH<br /><b>PAIRS</b></span><span class="card-meta">Test your memory at a relaxed pace.</span><span class="play-arrow">-&gt;</span>
+            </button>
+            <button class="game-card card-purple" data-game="quick" type="button">
+              <span class="card-number">04</span><span class="card-icon">!</span><span class="card-title">QUICK<br /><b>DRAW</b></span><span class="card-meta">Wait for the signal and react.</span><span class="play-arrow">-&gt;</span>
+            </button>
+            <button class="game-card card-green" data-game="lock" type="button">
+              <span class="card-number">05</span><span class="card-icon">123</span><span class="card-title">NUMBER<br /><b>LOCK</b></span><span class="card-meta">Crack the secret number.</span><span class="play-arrow">-&gt;</span>
+            </button>
+            <button class="game-card card-orange" data-game="word" type="button">
+              <span class="card-number">06</span><span class="card-icon">ABC</span><span class="card-title">WORD<br /><b>FLIP</b></span><span class="card-meta">Unscramble a word before time runs out.</span><span class="play-arrow">-&gt;</span>
+            </button>
+          </div>
+
+          <section class="game-stage" aria-live="polite">
+            <div class="stage-header"><div><p class="eyebrow"><span></span> This is the game you selected.</p><h2 id="game-title">Tap Rush</h2></div><span class="best-score">BEST <b id="best-score">0</b></span></div>
+            <div class="stage-body" id="game-body"></div>
+          </section>
+        </section>
+
+        <section class="reward-strip"><span class="ticket-big">+</span><div><p class="eyebrow">A little practice adds up.</p><h2>Every score earns tickets.</h2></div><p>Come back tomorrow for a fresh challenge, keep your day streak alive, and turn small wins into bragging rights.</p></section>
+      </main>
+      <footer><span>JOYJOY ARCADE 2026</span><span>MADE FOR BOREDOM. PLAY NICE.</span></footer>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
