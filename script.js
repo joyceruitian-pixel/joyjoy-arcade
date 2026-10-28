@@ -17,6 +17,7 @@ const state = {
     { id: 'earn-tickets', text: 'Earn 10 tickets', done: false, reward: 8, system: true }
   ], lastVisit: localStorage.getItem('joyjoy-last-visit') || '', dailyDate: localStorage.getItem('joyjoy-daily-date') || '', dailyDone: localStorage.getItem('joyjoy-daily-done') === 'true'
 };
+state.tasks = state.tasks.map(task => ({ ...task, done: task.done === true }));
 const body = document.querySelector('#game-body');
 const title = document.querySelector('#game-title');
 const bestScore = document.querySelector('#best-score');
