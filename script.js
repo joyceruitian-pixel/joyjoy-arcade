@@ -12,7 +12,7 @@ const dailyOptions = [
 const gameCosts = { tap: 1, dodge: 2, match: 2, quick: 2, lock: 3, word: 3 };
 const challenge = dailyOptions[today().split('').reduce((sum, digit) => sum + digit.charCodeAt(0), 0) % dailyOptions.length];
 const state = {
-  game: 'tap', gamePaid: false, tickets: read('joyjoy-tickets', 5), streak: read('joyjoy-streak', 0), best: read('joyjoy-best', {}),
+  game: 'tap', gamePaid: false, tickets: read('joyjoy-tickets', 5), streak: read('joyjoy-streak', 0), best: read('joyjoy-best', {}), lastReward: localStorage.getItem('joyjoy-last-reward') || '',
   boosts: { double: false, magnet: false, golden: false, extraTime: false, lucky: false, premium: false, ...read('joyjoy-boosts', {}) },
   tasks: read('joyjoy-tasks', null) || [
     { id: 'play-round', text: 'Play one arcade game', done: false, reward: 5, system: true },
@@ -30,11 +30,11 @@ let dodgeCleanup = null;
 
 function save() {
   localStorage.setItem('joyjoy-tickets', state.tickets); localStorage.setItem('joyjoy-streak', state.streak); localStorage.setItem('joyjoy-best', JSON.stringify(state.best)); localStorage.setItem('joyjoy-tasks', JSON.stringify(state.tasks));
-  localStorage.setItem('joyjoy-boosts', JSON.stringify(state.boosts)); document.querySelector('#tickets').textContent = state.tickets; document.querySelector('#streak').textContent = state.streak; if (typeof renderShop === 'function') renderShop();
+  localStorage.setItem('joyjoy-boosts', JSON.stringify(state.boosts)); if (state.lastReward) localStorage.setItem('joyjoy-last-reward', state.lastReward); document.querySelector('#tickets').textContent = state.tickets; document.querySelector('#streak').textContent = state.streak; if (typeof renderShop === 'function') renderShop(); const rewardStatus = document.querySelector('#reward-status'); if (rewardStatus) rewardStatus.textContent = state.lastReward || 'Finish the linked game to check off the task and earn tickets.';
 }
 function notify(message) { toast.textContent = message; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2400); }
 function addTickets(amount) { state.tickets += amount; save(); }
-function completeTask(id) { const task = state.tasks.find(item => item.id === id); if (!task || task.done) return false; task.done = true; addTickets(task.reward || 3); renderTasks(); const board = document.querySelector('.task-board'); board.classList.remove('reward-pulse'); void board.offsetWidth; board.classList.add('reward-pulse'); setTimeout(() => board.classList.remove('reward-pulse'), 900); notify(`${task.system ? 'Game task' : 'Task'} complete. You earned ${task.reward || 3} tickets.`); return true; }
+function completeTask(id) { const task = state.tasks.find(item => item.id === id); if (!task || task.done) return false; task.done = true; const reward = task.reward || 3; state.lastReward = `${task.system ? 'The game task is complete.' : 'Your task is complete.'} You earned ${reward} tickets.`; addTickets(reward); renderTasks(); const board = document.querySelector('.task-board'); board.classList.remove('reward-pulse'); void board.offsetWidth; board.classList.add('reward-pulse'); setTimeout(() => board.classList.remove('reward-pulse'), 900); notify(state.lastReward); return true; }
 const shopItems = { double: { cost: 25, label: 'Ticket doubler', owned: () => state.boosts.double }, magnet: { cost: 20, label: 'Ticket magnet', owned: () => state.boosts.magnet }, golden: { cost: 40, label: 'Golden cabinet', owned: () => state.boosts.golden }, extraTime: { cost: 30, label: 'Extra time', owned: () => state.boosts.extraTime }, lucky: { cost: 35, label: 'Lucky start', owned: () => state.boosts.lucky }, premium: { cost: 75, label: 'VIP arcade', owned: () => state.boosts.premium } };
 function renderShop() { const note = document.querySelector('#shop-note'); if (!note) return; document.body.classList.toggle('golden-cabinet', state.boosts.golden); document.querySelectorAll('.shop-button').forEach(buttonEl => { const item = shopItems[buttonEl.dataset.item]; const owned = item.owned(); buttonEl.disabled = owned || state.tickets < item.cost; buttonEl.textContent = owned ? 'Owned' : state.tickets < item.cost ? `Need ${item.cost - state.tickets} more` : 'Buy boost'; }); const ready = ['double', 'magnet', 'extraTime', 'lucky'].some(key => state.boosts[key]); note.textContent = ready ? 'A boost is ready. Choose the matching game and use it on your next round.' : state.boosts.premium ? 'VIP arcade is active. Every completed game now pays five extra tickets.' : state.boosts.golden ? 'The golden cabinet is unlocked. Keep playing to save up for boosts.' : 'Finish games and daily challenges to collect enough tickets for a prize.'; }
 function buyItem(itemKey) { const item = shopItems[itemKey]; if (!item || item.owned() || state.tickets < item.cost) return; state.tickets -= item.cost; state.boosts[itemKey] = true; save(); notify(`${item.label} unlocked.`); }
@@ -57,6 +57,7 @@ function setupVisit() {
   if (state.dailyDate !== current) { state.dailyDate = current; state.dailyDone = false; }
   localStorage.setItem('joyjoy-last-visit', state.lastVisit); localStorage.setItem('joyjoy-daily-date', state.dailyDate); localStorage.setItem('joyjoy-daily-done', state.dailyDone); save();
   document.querySelector('#daily-text').textContent = state.dailyDone ? `Complete! You earned today's ${challenge.reward} bonus tickets.` : challenge.text;
+  document.querySelector('#return-note').textContent = state.dailyDone ? 'Return tomorrow to keep your day streak going.' : 'Return tomorrow to continue your day streak.';
   document.querySelector('#daily-reward').textContent = state.dailyDone ? 'DONE' : `+${challenge.reward}`;
   document.querySelector('#daily-play').textContent = state.dailyDone ? 'Play another round ->' : 'Play the challenge ->';
   document.querySelector('#daily-play').addEventListener('click', () => { showGame(challenge.game, true); document.querySelector('#arcade').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
