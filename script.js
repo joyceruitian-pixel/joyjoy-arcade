@@ -12,6 +12,7 @@ const dailyOptions = [
 const challenge = dailyOptions[today().split('').reduce((sum, digit) => sum + digit.charCodeAt(0), 0) % dailyOptions.length];
 const state = {
   game: 'tap', tickets: read('joyjoy-tickets', 0), streak: read('joyjoy-streak', 0), best: read('joyjoy-best', {}),
+  boosts: read('joyjoy-boosts', { double: false, magnet: false, golden: false }),
   tasks: read('joyjoy-tasks', null) || [
     { id: 'play-round', text: 'Play one arcade game', done: false, reward: 5, system: true },
     { id: 'earn-tickets', text: 'Earn 10 tickets', done: false, reward: 8, system: true }
@@ -27,11 +28,15 @@ let dodgeCleanup = null;
 
 function save() {
   localStorage.setItem('joyjoy-tickets', state.tickets); localStorage.setItem('joyjoy-streak', state.streak); localStorage.setItem('joyjoy-best', JSON.stringify(state.best)); localStorage.setItem('joyjoy-tasks', JSON.stringify(state.tasks));
-  document.querySelector('#tickets').textContent = state.tickets; document.querySelector('#streak').textContent = state.streak;
+  localStorage.setItem('joyjoy-boosts', JSON.stringify(state.boosts)); document.querySelector('#tickets').textContent = state.tickets; document.querySelector('#streak').textContent = state.streak; if (typeof renderShop === 'function') renderShop();
 }
 function notify(message) { toast.textContent = message; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2400); }
 function addTickets(amount) { state.tickets += amount; save(); }
 function completeTask(id) { const task = state.tasks.find(item => item.id === id); if (!task || task.done) return false; task.done = true; addTickets(task.reward || 3); renderTasks(); notify(`${task.system ? 'Game task' : 'Task'} complete. +${task.reward || 3} tickets.`); return true; }
+const shopItems = { double: { cost: 25, label: 'Ticket doubler', owned: () => state.boosts.double }, magnet: { cost: 20, label: 'Ticket magnet', owned: () => state.boosts.magnet }, golden: { cost: 40, label: 'Golden cabinet', owned: () => state.boosts.golden } };
+function renderShop() { const note = document.querySelector('#shop-note'); if (!note) return; document.body.classList.toggle('golden-cabinet', state.boosts.golden); document.querySelectorAll('.shop-button').forEach(buttonEl => { const item = shopItems[buttonEl.dataset.item]; const owned = item.owned(); buttonEl.disabled = owned || state.tickets < item.cost; buttonEl.textContent = owned ? 'Owned' : state.tickets < item.cost ? `Need ${item.cost - state.tickets} more` : 'Buy boost'; }); note.textContent = state.boosts.double || state.boosts.magnet ? 'A boost is ready for your next completed game.' : state.boosts.golden ? 'The golden cabinet is unlocked. Keep playing to save up for boosts.' : 'Finish games and daily challenges to collect enough tickets for a prize.'; }
+function buyItem(itemKey) { const item = shopItems[itemKey]; if (!item || item.owned() || state.tickets < item.cost) return; state.tickets -= item.cost; state.boosts[itemKey] = true; save(); notify(`${item.label} unlocked.`); }
+function setupShop() { document.querySelectorAll('.shop-button').forEach(buttonEl => buttonEl.addEventListener('click', () => buyItem(buttonEl.dataset.item))); renderShop(); }
 function renderTasks() {
   const list = document.querySelector('#task-list'); const done = state.tasks.filter(task => task.done).length;
   document.querySelector('#task-count').textContent = `${done}/${state.tasks.length}`;
@@ -56,7 +61,7 @@ function setupVisit() {
 }
 function finish(score, game, won = true) {
   const old = state.best[game] || 0; const record = game === 'quick' ? old === 0 || score < old : score > old; if (record) state.best[game] = score;
-  const earned = game === 'quick' ? Math.max(1, Math.floor((1000 - score) / 100)) : Math.max(1, Math.floor(score / 3)); addTickets(earned); completeTask('play-round');
+  let earned = game === 'quick' ? Math.max(1, Math.floor((1000 - score) / 100)) : Math.max(1, Math.floor(score / 3)); if (state.boosts.double) { earned *= 2; state.boosts.double = false; } if (state.boosts.magnet) { earned += 10; state.boosts.magnet = false; } addTickets(earned); completeTask('play-round');
   if (state.tickets >= 10) completeTask('earn-tickets');
   const challengeDone = !state.dailyDone && challenge.game === game && ((game === 'tap' && score >= challenge.target) || (game === 'dodge' && score >= challenge.target) || (game === 'match' && score >= 1 && score <= challenge.target) || (game === 'quick' && score <= challenge.target) || (game === 'lock' && won) || (game === 'word' && won));
   if (challengeDone) { state.dailyDone = true; localStorage.setItem('joyjoy-daily-done', 'true'); addTickets(challenge.reward); document.querySelector('#daily-text').textContent = `Complete! You earned today's ${challenge.reward} bonus tickets.`; document.querySelector('#daily-reward').textContent = 'DONE'; notify(`DAILY CHALLENGE COMPLETE! +${challenge.reward} tickets`); }
@@ -79,4 +84,4 @@ function renderMatch() { body.innerHTML = `<p class="game-instructions">Flip two
 function setupMatch() { const grid = document.querySelector('#match-grid'); if (!grid) return; const icons = ['A', 'B', 'C', 'D', 'A', 'B', 'C', 'D'].sort(() => Math.random() - 0.5); let open = [], matches = 0, flips = 0, locked = false; grid.innerHTML = icons.map((icon, i) => `<button class="match-card" data-icon="${icon}" aria-label="Hidden card ${i + 1}" type="button">${icon}</button>`).join(''); const cards = [...grid.children], flipEl = document.querySelector('#flips'); cards.forEach(card => card.onclick = () => { if (locked || card.classList.contains('flipped') || card.classList.contains('matched')) return; card.classList.add('flipped'); open.push(card); if (open.length < 2) return; flips++; flipEl.textContent = flips; locked = true; if (open[0].dataset.icon === open[1].dataset.icon) { open.forEach(item => item.classList.add('matched')); matches++; open = []; locked = false; if (matches === 4) { document.querySelector('#match-status').textContent = 'All pairs are matched.'; finish(Math.max(1, 40 - flips * 2), 'match'); } } else setTimeout(() => { open.forEach(item => item.classList.remove('flipped')); open = []; locked = false; }, 650); }); }
 
 document.querySelectorAll('.game-card').forEach(card => card.addEventListener('click', () => showGame(card.dataset.game)));
-setupVisit(); setupTasks(); save(); showGame('tap');
+setupVisit(); setupTasks(); setupShop(); save(); showGame('tap');
