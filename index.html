@@ -38,20 +38,20 @@
         <section class="habit-section" id="quests">
           <div class="daily-challenge">
             <div class="daily-art" aria-hidden="true">R</div>
-            <div class="daily-copy"><p class="eyebrow"><span></span> A fresh challenge is waiting today.</p><h2>Daily challenge</h2><p id="daily-text">Loading today's challenge...</p><button class="challenge-button" id="daily-play" type="button">Play the challenge -&gt;</button></div>
+            <div class="daily-copy"><p class="eyebrow"><span></span> A new challenge is available today.</p><h2>Daily challenge</h2><p id="daily-text">Loading today's challenge...</p><button class="challenge-button" id="daily-play" type="button">Play today's challenge -&gt;</button></div>
             <div class="daily-reward"><span>+</span><b id="daily-reward">+20</b><small>bonus tickets</small></div>
           </div>
           <div class="task-board">
-            <div class="task-heading"><div><p class="eyebrow"><span></span> Tasks you can finish today.</p><h2>Small wins<br /><i>add up over time.</i></h2></div><div class="task-progress"><strong id="task-count">0/0</strong><span>tasks done</span></div></div>
+            <div class="task-heading"><div><p class="eyebrow"><span></span> These are the tasks you can finish today.</p><h2>Small wins<br /><i>add up over time.</i></h2></div><div class="task-progress"><strong id="task-count">0/0</strong><span>tasks completed</span></div></div>
             <form class="task-form" id="task-form"><label class="sr-only" for="task-input">Add a task</label><input id="task-input" maxlength="70" placeholder="Add a tiny task..." autocomplete="off" /><button type="submit">+ Add task</button></form>
             <ul class="task-list" id="task-list"></ul>
-            <p class="task-hint">The first task is linked to the selected game. Finishing that game marks the task done and awards its ticket bonus.</p>
+            <p class="task-hint">The first task follows the selected game. When you finish that game, the task checks itself off and awards five tickets.</p>
           </div>
         </section>
 
         <section class="arcade-section" id="arcade">
           <div class="section-heading">
-            <div><p class="eyebrow"><span></span> Choose a game and start your next round.</p><h2>Choose a game<br /><i>that sounds fun.</i></h2></div>
+            <div><p class="eyebrow"><span></span> Choose a game and start a round.</p><h2>Choose a game<br /><i>that sounds fun.</i></h2></div>
             <p class="microcopy">Choose any game for a quick break.<br />Nothing needs to be downloaded, and scores stay on this device.</p>
           </div>
 
@@ -77,7 +77,7 @@
           </div>
 
           <section class="game-stage" aria-live="polite">
-            <div class="stage-header"><div><p class="eyebrow"><span></span> This is the game you selected.</p><h2 id="game-title">Tap Rush</h2></div><span class="best-score">BEST <b id="best-score">0</b></span></div>
+            <div class="stage-header"><div><p class="eyebrow"><span></span> The selected game completes the linked task.</p><h2 id="game-title">Tap Rush</h2></div><span class="best-score">BEST SCORE <b id="best-score">0</b></span></div>
             <div class="stage-body" id="game-body"></div>
           </section>
         </section>
@@ -85,7 +85,7 @@
         <section class="shop-section" id="shop">
           <div class="section-heading shop-heading">
             <div><p class="eyebrow"><span></span> Use the tickets you earn.</p><h2>Visit the prize<br /><i>counter.</i></h2></div>
-            <p class="microcopy">Spend tickets on helpful boosts and a cabinet upgrade. Your purchases stay saved on this device.</p>
+            <p class="microcopy">You can spend saved tickets on helpful boosts and a cabinet upgrade.</p>
           </div>
           <div class="shop-grid">
             <article class="shop-card shop-coral">
@@ -110,11 +110,11 @@
           <p class="shop-note" id="shop-note">Finish games and daily challenges to collect enough tickets for a prize.</p>
         </section>
 
-        <section class="reward-strip"><span class="ticket-big">+</span><div><p class="eyebrow">Your progress is saved here.</p><h2>Every score earns tickets.</h2></div><p>The challenge changes each day, and the streak records consecutive visits so you can see your progress over time.</p></section>
+        <section class="reward-strip"><span class="ticket-big">+</span><div><p class="eyebrow">Your progress is saved on this device.</p><h2>Every score earns tickets.</h2></div><p>The daily challenge changes each day, and your streak grows when you return on the next day.</p></section>
       </main>
-      <footer><span>JOYJOY ARCADE 2026</span><span>MADE FOR BOREDOM. PLAY NICE.</span></footer>
+      <footer><span>JOYJOY ARCADE 2026</span><span>This arcade is ready whenever you need a short break.</span></footer>
     </div>
     <div class="toast" id="toast" role="status"></div>
-    <script src="script.js?v=7"></script>
+    <script src="script.js?v=8"></script>
   </body>
 </html>
