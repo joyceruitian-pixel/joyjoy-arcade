@@ -3,118 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="JoyJoy Arcade: tiny games for big boredom." />
-    <title>JoyJoy Arcade</title>
+    <meta name="description" content="Hard Workers Arcade combines a task list with a playable claw-machine game." />
+    <title>Hard Workers' Arcade</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="site-shell">
-      <header class="topbar">
-        <a class="brand" href="#top" aria-label="JoyJoy Arcade home">
-          <span class="brand-mark" aria-hidden="true">J</span>
-          <span>JOYJOY <em>ARCADE</em></span>
-        </a>
-        <div class="player-stats" aria-label="Player stats">
-          <span class="streak-pill"><strong id="streak">0</strong> day streak</span>
-          <span class="ticket-pill"><strong id="tickets">0</strong> tickets</span>
-        </div>
-      </header>
-
+    <div class="app-shell">
+      <header class="topbar"><a class="brand" href="#top" aria-label="Hard Workers' Arcade home"><span class="brand-mark">H</span><span>HARD WORKERS' <b>ARCADE</b></span></a><div class="stats" aria-label="Your saved progress"><span><b id="task-stat">0</b> tasks completed</span><span class="token-stat"><b id="token-stat">0</b> Arcade Tokens</span><span class="ticket-stat"><b id="ticket-stat">0</b> tickets</span><span><b id="streak-stat">0</b> day streak</span></div></header>
       <main id="top">
-        <section class="hero">
-          <div class="hero-copy">
-            <p class="eyebrow"><span></span> The doors are open all day, and everyone can play.</p>
-            <h1>Find something<br /><span>fun to do.</span></h1>
-          <p class="hero-text">Choose a short game, complete a related task, and earn tickets that stay saved on this device.</p>
-            <a class="scroll-cue" href="#arcade"><span>v</span> choose your game</a>
-          </div>
-          <div class="hero-machine" aria-label="Decorative arcade cabinet illustration">
-            <div class="machine-top"><span>J</span><span>O</span><span>Y</span><span>!</span></div>
-            <div class="machine-screen"><div class="screen-spark">+</div><strong>PRESS<br />PLAY</strong><small>INSERT FUN</small></div>
-            <div class="machine-controls"><span class="joystick"></span><span class="control-dot yellow"></span><span class="control-dot pink"></span></div>
-          </div>
-        </section>
-
-        <section class="habit-section" id="quests">
-          <div class="daily-challenge">
-            <div class="daily-art" aria-hidden="true">R</div>
-            <div class="daily-copy"><p class="eyebrow"><span></span> A new challenge is available today.</p><h2>Daily challenge</h2><p id="daily-text">Loading today's challenge...</p><p class="return-note" id="return-note">Return tomorrow to continue your day streak.</p><button class="challenge-button" id="daily-play" type="button">Play today's challenge -&gt;</button></div>
-            <div class="daily-reward"><span>+</span><b id="daily-reward">+20</b><small>bonus tickets</small></div>
-          </div>
-          <div class="task-board">
-            <div class="task-heading"><div><p class="eyebrow"><span></span> These are the tasks you can finish today.</p><h2>Small wins<br /><i>add up over time.</i></h2></div><div class="task-progress"><strong id="task-count">0/0</strong><span>tasks completed</span></div></div>
-            <form class="task-form" id="task-form"><label class="sr-only" for="task-input">Add a task</label><input id="task-input" maxlength="70" placeholder="Add a tiny task..." autocomplete="off" /><button type="submit">+ Add task</button></form>
-            <ul class="task-list" id="task-list"></ul>
-            <p class="task-hint">The first task follows the selected game. When you finish that game, the task checks itself off and awards five tickets.</p><p class="reward-status" id="reward-status">Finish the linked game to check off the task and earn tickets.</p>
-          </div>
-        </section>
-
-        <section class="arcade-section" id="arcade">
-          <div class="section-heading">
-            <div><p class="eyebrow"><span></span> Choose a game and start a round.</p><h2>Choose a game<br /><i>that sounds fun.</i></h2></div>
-            <p class="microcopy">Choose any game for a quick break.<br />Nothing needs to be downloaded, and scores stay on this device.</p>
-          </div>
-
-          <div class="game-grid">
-            <button class="game-card card-coral active" data-game="tap" type="button">
-              <span class="card-number">01</span><span class="card-icon">+</span><span class="card-title">TAP<br /><b>RUSH</b></span><span class="card-meta">A 30-second reflex game.</span><span class="card-cost">1 ticket</span><span class="play-arrow">-&gt;</span>
-            </button>
-            <button class="game-card card-blue" data-game="dodge" type="button">
-              <span class="card-number">02</span><span class="card-icon">O</span><span class="card-title">DODGE<br /><b>ZONE</b></span><span class="card-meta">Dodge falling rocks and stay focused.</span><span class="card-cost">2 tickets</span><span class="play-arrow">-&gt;</span>
-            </button>
-            <button class="game-card card-yellow" data-game="match" type="button">
-              <span class="card-number">03</span><span class="card-icon">A B</span><span class="card-title">MATCH<br /><b>PAIRS</b></span><span class="card-meta">Test your memory at a relaxed pace.</span><span class="card-cost">2 tickets</span><span class="play-arrow">-&gt;</span>
-            </button>
-            <button class="game-card card-purple" data-game="quick" type="button">
-              <span class="card-number">04</span><span class="card-icon">!</span><span class="card-title">QUICK<br /><b>DRAW</b></span><span class="card-meta">Wait for the signal and react.</span><span class="card-cost">2 tickets</span><span class="play-arrow">-&gt;</span>
-            </button>
-            <button class="game-card card-green" data-game="lock" type="button">
-              <span class="card-number">05</span><span class="card-icon">123</span><span class="card-title">NUMBER<br /><b>LOCK</b></span><span class="card-meta">Crack the secret number.</span><span class="card-cost">3 tickets</span><span class="play-arrow">-&gt;</span>
-            </button>
-            <button class="game-card card-orange" data-game="word" type="button">
-              <span class="card-number">06</span><span class="card-icon">ABC</span><span class="card-title">WORD<br /><b>FLIP</b></span><span class="card-meta">Unscramble a word before time runs out.</span><span class="card-cost">3 tickets</span><span class="play-arrow">-&gt;</span>
-            </button>
-          </div>
-
-          <section class="game-stage" aria-live="polite">
-            <div class="stage-header"><div><p class="eyebrow"><span></span> The selected game completes the linked task.</p><h2 id="game-title">Tap Rush</h2></div><span class="best-score">BEST SCORE <b id="best-score">0</b></span></div>
-            <div class="stage-body" id="game-body"></div>
-          </section>
-        </section>
-
-        <section class="shop-section" id="shop">
-          <div class="section-heading shop-heading">
-            <div><p class="eyebrow"><span></span> Use the tickets you earn.</p><h2>Visit the prize<br /><i>counter.</i></h2></div>
-            <p class="microcopy">You can spend saved tickets on helpful boosts and a cabinet upgrade.</p>
-          </div>
-          <div class="shop-grid">
-            <article class="shop-card shop-coral">
-              <span class="shop-price">25 tickets</span><h3>Ticket doubler</h3><p>Your next completed game pays twice as many game tickets.</p><button class="shop-button" data-item="double" type="button">Buy boost</button>
-            </article>
-            <article class="shop-card shop-blue">
-              <span class="shop-price">20 tickets</span><h3>Ticket magnet</h3><p>Your next completed game gives you 10 extra tickets.</p><button class="shop-button" data-item="magnet" type="button">Buy boost</button>
-            </article>
-            <article class="shop-card shop-yellow">
-              <span class="shop-price">40 tickets</span><h3>Golden cabinet</h3><p>Give the arcade cabinet a golden look. This upgrade stays unlocked.</p><button class="shop-button" data-item="golden" type="button">Unlock cabinet</button>
-            </article>
-            <article class="shop-card shop-purple">
-              <span class="shop-price">30 tickets</span><h3>Extra time</h3><p>Your next Tap Rush round lasts 40 seconds instead of 30.</p><button class="shop-button" data-item="extraTime" type="button">Buy boost</button>
-            </article>
-            <article class="shop-card shop-green">
-              <span class="shop-price">35 tickets</span><h3>Lucky start</h3><p>Your next Tap Rush round begins with five hits already on the score.</p><button class="shop-button" data-item="lucky" type="button">Buy boost</button>
-            </article>
-            <article class="shop-card shop-orange">
-              <span class="shop-price">75 tickets</span><h3>VIP arcade</h3><p>Keep this upgrade forever and earn five extra tickets after every game.</p><button class="shop-button" data-item="premium" type="button">Unlock upgrade</button>
-            </article>
-          </div>
-          <p class="shop-note" id="shop-note">Finish games and daily challenges to collect enough tickets for a prize.</p>
-        </section>
-
-        <section class="reward-strip"><span class="ticket-big">+</span><div><p class="eyebrow">Your progress is saved on this device.</p><h2>Every score earns tickets.</h2></div><p>The daily challenge changes each day, and your streak grows when you return on the next day.</p></section>
+        <section class="intro"><div><p class="eyebrow">A task list with a playable arcade.</p><h1>Finish a task.<br /><span>Take a turn.</span></h1><p class="intro-copy">Complete everyday tasks to earn Arcade Tokens. Each token gives you one turn at the claw machine, where prizes add tickets to your saved score.</p><a class="primary-link" href="#tasks">Add your first task <span>-&gt;</span></a></div><div class="intro-card"><span class="machine-label">TOKEN REQUIRED</span><div class="mini-screen">TASK<br /><strong>PLAY</strong></div><p>One completed task earns one token.</p></div></section>
+        <section class="dashboard" id="tasks"><div class="task-panel panel"><div class="panel-heading"><div><p class="eyebrow">Your saved task list.</p><h2>Tasks for today</h2></div><span class="count" id="task-count">0/0</span></div><form id="task-form" class="task-form"><label class="sr-only" for="task-input">New task</label><input id="task-input" maxlength="80" placeholder="Type a task you want to finish..." autocomplete="off" /><button type="submit">Add task</button></form><ul class="task-list" id="task-list"></ul><p class="empty-state" id="empty-state">Add a task to begin earning Arcade Tokens.</p><p class="task-explanation">Complete each task once to earn one Arcade Token. Rechecking the same task later will not award another token.</p></div><aside class="habit-panel panel"><div class="streak-display"><span class="streak-number" id="streak-large">0</span><div><p class="eyebrow">Your return habit.</p><h2>Day streak</h2><p id="streak-message">Complete a task today to begin your streak.</p></div></div><div class="daily-card"><p class="eyebrow">Today's extra goal.</p><h3 id="daily-title">Daily challenge</h3><p id="daily-copy">Complete one task today to earn progress toward your next visit.</p><strong id="daily-reward">+5 tickets</strong></div></aside></section>
+        <section class="arcade" id="arcade"><div class="section-heading"><div><p class="eyebrow">Spend one Arcade Token to play.</p><h2>The claw machine</h2></div><p>Move the claw, line it up with a prize, and press the drop button. A successful grab adds tickets to your saved score.</p></div><div class="arcade-layout"><div class="machine panel" aria-label="Interactive claw machine"><div class="machine-top"><span>HARD WORKERS' ARCADE</span><span id="round-state">READY</span></div><div class="machine-window" id="machine-window"><div class="claw" id="claw"><span class="claw-arm"></span><span class="claw-grab"></span></div><div class="prizes" id="prizes"><button class="prize prize-one" data-value="10" aria-label="Blue prize worth 10 tickets">10</button><button class="prize prize-two" data-value="25" aria-label="Pink prize worth 25 tickets">25</button><button class="prize prize-three" data-value="50" aria-label="Yellow prize worth 50 tickets">50</button><button class="prize prize-four" data-value="15" aria-label="Green prize worth 15 tickets">15</button></div></div><div class="machine-controls"><button class="control-button" id="left-control" type="button" aria-label="Move claw left">&lt; LEFT</button><button class="drop-button" id="drop-button" type="button">Use 1 token to play</button><button class="control-button" id="right-control" type="button" aria-label="Move claw right">RIGHT &gt;</button></div><p class="game-status" id="game-status">Complete a task to earn an Arcade Token. Then use it to start a turn.</p></div><div class="game-info panel"><p class="eyebrow">How this connects.</p><h3>The arcade turn comes from your task list.</h3><p>Every completed task gives you one Arcade Token. A turn costs one token, so finishing tasks gives you the chance to play.</p><div class="instruction-list"><p><b>1.</b> Use the left and right controls to line up the claw.</p><p><b>2.</b> Press the drop button to lower the claw.</p><p><b>3.</b> Grab a prize to earn tickets, then return tomorrow to continue your streak.</p></div></div></div></section>
+        <section class="reward-section" id="rewards"><div class="section-heading"><div><p class="eyebrow">Tickets are your longer-term score.</p><h2>Ticket rewards</h2></div><p>Tickets stay saved on this device. You can use them to unlock small upgrades that make future turns more helpful.</p></div><div class="reward-grid"><button class="reward-card" data-reward="bonus" type="button"><span>25 tickets</span><h3>Prize bonus</h3><p>Your next successful grab earns 10 extra tickets.</p><b id="bonus-reward-button">Unlock</b></button><button class="reward-card" data-reward="cabinet" type="button"><span>50 tickets</span><h3>Cabinet lights</h3><p>Change the machine to its brighter saved color.</p><b id="cabinet-reward-button">Unlock</b></button><button class="reward-card" data-reward="double" type="button"><span>75 tickets</span><h3>Double prize</h3><p>Your next successful grab pays twice its listed ticket value.</p><b id="double-reward-button">Unlock</b></button></div><p class="reward-note" id="reward-note">Win prizes to build enough tickets for an upgrade.</p></section>
       </main>
-      <footer><span>JOYJOY ARCADE 2026</span><span>This arcade is ready whenever you need a short break.</span></footer>
+      <footer>Your tasks, Arcade Tokens, tickets, and streak are saved on this device.</footer>
     </div>
     <div class="toast" id="toast" role="status"></div>
-    <script src="script.js?v=9"></script>
+    <script src="script.js?v=10"></script>
   </body>
 </html>
